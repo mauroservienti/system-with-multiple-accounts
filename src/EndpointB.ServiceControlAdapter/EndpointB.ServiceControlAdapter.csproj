@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NServiceBus.AmazonSQS" Version="5.6.1" />
+      <PackageReference Include="NServiceBus.Raw" Version="3.2.5" />
+      <PackageReference Include="ServiceControl.TransportAdapter" Version="2.0.2" />
+    </ItemGroup>
+
+</Project>
