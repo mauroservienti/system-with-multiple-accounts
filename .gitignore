@@ -2,6 +2,7 @@
 .learningtransport/
 
 # Platform data storage
+.audit-db/
 .db/
 .logs/
 
