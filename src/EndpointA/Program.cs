@@ -15,6 +15,7 @@ namespace EndpointA
 
             var config = new EndpointConfiguration(endpointName);
             config.SendFailedMessagesTo("error");
+            config.AuditProcessedMessagesTo("audit");
 
             var transportConfig = config.UseTransport<LearningTransport>();
             string folder = Path.GetTempPath();
