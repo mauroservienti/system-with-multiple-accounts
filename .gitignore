@@ -1,3 +1,6 @@
+# NServiceBus learning transport storage folder
+.learningtransport/
+
 # Platform data storage
 .db/
 .logs/
