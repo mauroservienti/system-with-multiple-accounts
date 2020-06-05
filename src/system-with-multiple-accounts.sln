@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedMessages", "SharedMes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceControlEndpoint", "ServiceControlEndpoint\ServiceControlEndpoint.csproj", "{A0D85CFF-F3AE-444B-AE95-692FD94871F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouterEndpoint", "RouterEndpoint\RouterEndpoint.csproj", "{7CF63D77-6D64-40C0-9B37-0A7468D35382}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A0D85CFF-F3AE-444B-AE95-692FD94871F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0D85CFF-F3AE-444B-AE95-692FD94871F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0D85CFF-F3AE-444B-AE95-692FD94871F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF63D77-6D64-40C0-9B37-0A7468D35382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF63D77-6D64-40C0-9B37-0A7468D35382}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF63D77-6D64-40C0-9B37-0A7468D35382}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF63D77-6D64-40C0-9B37-0A7468D35382}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

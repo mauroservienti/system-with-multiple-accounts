@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.3.0" />
+    <PackageReference Include="NServiceBus.Router.Connector" Version="3.8.0" />
   </ItemGroup>
 
   <ItemGroup>

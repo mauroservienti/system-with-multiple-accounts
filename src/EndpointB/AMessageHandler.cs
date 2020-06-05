@@ -1,9 +1,7 @@
-﻿using NServiceBus;
-using SharedMessages;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using NServiceBus;
+using SharedMessages;
 
 namespace EndpointB
 {
@@ -13,7 +11,7 @@ namespace EndpointB
         {
             Console.WriteLine($"Received AMessage from {context.ReplyToAddress}, saying {message.Message}");
 
-            return Task.CompletedTask;
+            return context.Reply(new ReplyMessage {Message = "Hi back to you"});
         }
     }
 }

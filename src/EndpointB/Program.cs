@@ -1,6 +1,8 @@
 ﻿using NServiceBus;
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using SharedMessages;
 
 namespace EndpointB
 {
@@ -13,12 +15,22 @@ namespace EndpointB
 
             var config = new EndpointConfiguration(endpointName);
             config.SendFailedMessagesTo("error");
-            config.UseTransport<LearningTransport>().StorageDirectory(@$"c:\temp\Application-{endpointName}");
+
+            var transportConfig = config.UseTransport<LearningTransport>();
+            string folder = Path.GetTempPath();
+            string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
+            transportConfig.StorageDirectory(pathForEndpoint);
+
+            var routingConfig = transportConfig.Routing();
+            routingConfig.RouteToEndpoint(typeof(SharedMessages.AMessage).Assembly, "EndpointA");
 
             var endpointInstance = await Endpoint.Start(config);
+            await endpointInstance.Publish<SomethingHappened>(happened => happened.WhatHappened = "Boem");
 
             Console.WriteLine($"Endpoint {endpointName} started.");
             Console.ReadLine();
+
+            await endpointInstance.Stop();
         }
     }
 }
