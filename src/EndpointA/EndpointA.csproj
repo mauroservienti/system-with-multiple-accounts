@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NServiceBus" Version="7.3.0" />
+    <PackageReference Include="NServiceBus.AmazonSQS" Version="5.0.0" />
     <PackageReference Include="NServiceBus.Heartbeat" Version="3.0.1" />
     <PackageReference Include="NServiceBus.Router.Connector" Version="3.8.0" />
   </ItemGroup>

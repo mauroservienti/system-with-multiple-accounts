@@ -2,7 +2,10 @@
 using SharedMessages;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.SQS;
 
 namespace EndpointA
 {
@@ -18,10 +21,11 @@ namespace EndpointA
             config.AuditProcessedMessagesTo("audit");
             config.SendHeartbeatTo("Particular.ServiceControl");
 
-            var transportConfig = config.UseTransport<LearningTransport>();
-            string folder = Path.GetTempPath();
-            string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
-            transportConfig.StorageDirectory(pathForEndpoint);
+            var transportConfig = config.UseTransport<SqsTransport>();
+
+            // string folder = Path.GetTempPath();
+            // string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
+            // transportConfig.StorageDirectory(pathForEndpoint);
             var routingConfig = transportConfig.Routing();
 
             var bridge = routingConfig.ConnectToRouter("RouterEndpoint");
