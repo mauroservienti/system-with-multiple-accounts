@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.SQS;
 using NServiceBus;
+using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Router;
 using NServiceBus.Unicast.Messages;
 
@@ -42,7 +43,7 @@ namespace RouterEndpoint
             routingProtocol.AddForwardRoute("BSideOfTheRouter", "ASideOfTheRouter");
 
             config.AutoCreateQueues();
-            config.Settings.SetupMessageMetadataRegistry();
+            //config.Settings.SetupMessageMetadataRegistry();
 
             var router = Router.Create(config);
             await router.Start();
@@ -57,7 +58,7 @@ namespace RouterEndpoint
 
     public static class SettingsHolderExtensions
     {
-        public static void SetupMessageMetadataRegistry(this SettingsHolder settings)
+        public static void SetupMessageMetadataRegistry(this NServiceBus.Settings.SettingsHolder settings)
         {
             bool IsMessageType(Type t) => true;
             var messageMetadataRegistry = (MessageMetadataRegistry)Activator.CreateInstance(
