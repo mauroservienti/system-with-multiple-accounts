@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.SQS;
 using NServiceBus;
 using ServiceControl.TransportAdapter;
 
@@ -11,14 +13,13 @@ namespace EndpointA.ServiceControlAdapter
         static async Task Main()
         {
             var transportAdapterConfig =
-                new TransportAdapterConfig<LearningTransport, LearningTransport>("MyTransport");
+                new TransportAdapterConfig<SqsTransport, SqsTransport>("MyTransport");
 
             string folder = Path.GetTempPath();
             transportAdapterConfig.CustomizeEndpointTransport(
                 customization: transportExtensions =>
                 {
-                    string pathForEndpoint = Path.Combine(folder, $"Application-EndpointA");
-                    transportExtensions.StorageDirectory(pathForEndpoint);
+                    transportExtensions.ClientFactory(() => new AmazonSQSClient("AKIAU65LPVK4UO7QBD7V", "2QC8+TdzQtb52VP41ufBZ4L38kAlG2X75bMm1d6h", RegionEndpoint.EUWest2));
                 });
 
             ITransportAdapter transportAdapter = TransportAdapter.Create(transportAdapterConfig);
