@@ -29,7 +29,8 @@ namespace EndpointB
             // string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
             // transportConfig.StorageDirectory(pathForEndpoint);
             var routingConfig = transportConfig.Routing();
-            routingConfig.RouteToEndpoint(typeof(SharedMessages.AMessage).Assembly, "EndpointA");
+            var bridge = routingConfig.ConnectToRouter("RouterEndpoint");
+            bridge.RouteToEndpoint(typeof(AMessage), "EndpointA");
 
             var endpointInstance = await Endpoint.Start(config);
             await endpointInstance.Publish<SomethingHappened>(happened => happened.WhatHappened = "Boem");

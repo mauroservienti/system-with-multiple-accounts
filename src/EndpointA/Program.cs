@@ -34,7 +34,7 @@ namespace EndpointA
 
             var bridge = routingConfig.ConnectToRouter("RouterEndpoint");
             bridge.RouteToEndpoint(typeof(AMessage), "EndpointB");
-            //bridge.RegisterPublisher(typeof(SomethingHappened), "EndpointB");
+            bridge.RegisterPublisher(typeof(SomethingHappened), "EndpointB");
 
             var endpointInstance = await Endpoint.Start(config);
             //await endpointInstance.Send(new AMessage() { Message = $"Hi, there. I'm {endpointName}." });

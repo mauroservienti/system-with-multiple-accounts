@@ -17,9 +17,9 @@ namespace EndpointB.ServiceControlAdapter
 
             string folder = Path.GetTempPath();
             transportAdapterConfig.CustomizeEndpointTransport(
-                transportExtensions =>
+                transportConfig =>
                 {
-                    transportExtensions.ClientFactory(() => new AmazonSQSClient("accessKey",
+                    transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
                         "secret", RegionEndpoint.EUWest2));
                 });
 

@@ -17,7 +17,6 @@ namespace RouterEndpoint
         static async Task Main()
         {
             var endpointName = typeof(Program).Namespace;
-            Console.Title = endpointName;
 
             //string folder = Path.GetTempPath();
             var config = new RouterConfiguration(endpointName);
