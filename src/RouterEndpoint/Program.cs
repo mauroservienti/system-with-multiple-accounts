@@ -26,16 +26,16 @@ namespace RouterEndpoint
                 transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
                     "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
+                transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
-            aSide.Settings.SetupMessageMetadataRegistry();
 
             var bSide = config.AddInterface<SqsTransport>("BSideOfTheRouter", transportConfig =>
             {
                 transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
                     "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
+                transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
-            bSide.Settings.SetupMessageMetadataRegistry();
 
             var routingProtocol = config.UseStaticRoutingProtocol();
             routingProtocol.AddForwardRoute("ASideOfTheRouter", "BSideOfTheRouter");
