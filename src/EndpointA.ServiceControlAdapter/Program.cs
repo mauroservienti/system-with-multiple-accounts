@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.SQS;
 using NServiceBus;
+using NServiceBus.Configuration.AdvancedExtensibility;
+using NServiceBus.Unicast.Messages;
 using ServiceControl.TransportAdapter;
 
 namespace EndpointA.ServiceControlAdapter
@@ -21,6 +25,7 @@ namespace EndpointA.ServiceControlAdapter
                 {
                     transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
                         "secret", RegionEndpoint.EUWest2));
+                    transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
             ITransportAdapter transportAdapter = TransportAdapter.Create(transportAdapterConfig);
@@ -29,6 +34,21 @@ namespace EndpointA.ServiceControlAdapter
             Console.WriteLine("Started ServiceControlAdapter for Endpoint A");
             Console.ReadLine();
             await transportAdapter.Stop();
+        }
+    }
+
+    public static class SettingsHolderExtensions
+    {
+        public static void SetupMessageMetadataRegistry(this NServiceBus.Settings.SettingsHolder settings)
+        {
+            bool IsMessageType(Type t) => true;
+            var messageMetadataRegistry = (MessageMetadataRegistry)Activator.CreateInstance(
+                type: typeof(MessageMetadataRegistry),
+                bindingAttr: BindingFlags.NonPublic | BindingFlags.Instance,
+                binder: null,
+                args: new object[] { (Func<Type, bool>)IsMessageType },
+                culture: CultureInfo.InvariantCulture);
+            settings.Set<MessageMetadataRegistry>(messageMetadataRegistry);
         }
     }
 }
