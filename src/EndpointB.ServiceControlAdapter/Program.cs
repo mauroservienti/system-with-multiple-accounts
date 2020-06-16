@@ -28,6 +28,14 @@ namespace EndpointB.ServiceControlAdapter
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
+            transportAdapterConfig.CustomizeServiceControlTransport(
+                customization: transportConfig =>
+                {
+                    transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
+                        "secret", RegionEndpoint.EUWest2));
+                    transportConfig.GetSettings().SetupMessageMetadataRegistry();
+                });
+
             ITransportAdapter transportAdapter = TransportAdapter.Create(transportAdapterConfig);
             await transportAdapter.Start();
 
