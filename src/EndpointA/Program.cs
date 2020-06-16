@@ -1,11 +1,8 @@
 ﻿using NServiceBus;
 using SharedMessages;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using Amazon;
-using Amazon.Runtime;
 using Amazon.SQS;
 
 namespace EndpointA
@@ -19,13 +16,14 @@ namespace EndpointA
 
             var config = new EndpointConfiguration(endpointName);
             config.SendFailedMessagesTo("error");
-            config.AuditProcessedMessagesTo("audit");
-            //config.SendHeartbeatTo("Particular.ServiceControl");
+            config.AuditProcessedMessagesTo("audit"); 
+            config.SendHeartbeatTo("Particular.ServiceControl");
 
             var transportConfig = config.UseTransport<SqsTransport>();
             config.EnableInstallers();
-            transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                "secret", RegionEndpoint.EUWest2));
+            transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                "secretkey", RegionEndpoint.EUWest2));
+
 
             // string folder = Path.GetTempPath();
             // string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
@@ -37,10 +35,23 @@ namespace EndpointA
             bridge.RegisterPublisher(typeof(SomethingHappened), "EndpointB");
 
             var endpointInstance = await Endpoint.Start(config);
-            //await endpointInstance.Send(new AMessage() { Message = $"Hi, there. I'm {endpointName}." });
-
+           
             Console.WriteLine($"Endpoint {endpointName} started.");
-            Console.ReadLine();
+            Console.WriteLine("Press any key to message, or exit to stop.");
+
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (input.ToLower() == "exit")
+                {
+                    break;
+                }
+                else
+                {
+                    await endpointInstance.Send(new AMessage() {Message = $"Hi, there. I'm {endpointName}."});
+                    Console.WriteLine("Sent message.");
+                }
+            }
 
             await endpointInstance.Stop();
         }

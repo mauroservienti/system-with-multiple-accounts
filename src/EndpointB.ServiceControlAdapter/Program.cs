@@ -23,16 +23,16 @@ namespace EndpointB.ServiceControlAdapter
             transportAdapterConfig.CustomizeEndpointTransport(
                 transportConfig =>
                 {
-                    transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                        "secret", RegionEndpoint.EUWest2));
+                    transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                        "secretkey", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
             transportAdapterConfig.CustomizeServiceControlTransport(
                 customization: transportConfig =>
                 {
-                    transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                        "secret", RegionEndpoint.EUWest2));
+                    transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                       "secretkey", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 

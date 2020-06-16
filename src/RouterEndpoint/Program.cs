@@ -23,16 +23,16 @@ namespace RouterEndpoint
 
             var aSide = config.AddInterface<SqsTransport>("ASideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                    "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                    "secretkey", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
 
             var bSide = config.AddInterface<SqsTransport>("BSideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                    "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                    "secretkey", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });

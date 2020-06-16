@@ -1,6 +1,5 @@
 ﻿using NServiceBus;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Amazon;
 using Amazon.SQS;
@@ -18,12 +17,12 @@ namespace EndpointB
             var config = new EndpointConfiguration(endpointName);
             config.SendFailedMessagesTo("error");
             config.AuditProcessedMessagesTo("audit");
-            //config.SendHeartbeatTo("Particular.ServiceControl");
+            config.SendHeartbeatTo("Particular.ServiceControl");
 
             var transportConfig = config.UseTransport<SqsTransport>();
             config.EnableInstallers();
-            transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                "secret", RegionEndpoint.EUWest2));
+            transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
+                "secretkey", RegionEndpoint.EUWest2));
 
             // string folder = Path.GetTempPath();
             // string pathForEndpoint = Path.Combine(folder, $"Application-{endpointName}");
