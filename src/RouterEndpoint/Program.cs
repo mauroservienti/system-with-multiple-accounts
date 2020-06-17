@@ -18,21 +18,18 @@ namespace RouterEndpoint
         {
             var endpointName = typeof(Program).Namespace;
 
-            //string folder = Path.GetTempPath();
             var config = new RouterConfiguration(endpointName);
 
             var aSide = config.AddInterface<SqsTransport>("ASideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
-                    "secretkey", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
 
             var bSide = config.AddInterface<SqsTransport>("BSideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
-                    "secretkey", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
@@ -42,7 +39,6 @@ namespace RouterEndpoint
             routingProtocol.AddForwardRoute("BSideOfTheRouter", "ASideOfTheRouter");
 
             config.AutoCreateQueues();
-            //config.Settings.SetupMessageMetadataRegistry();
 
             var router = Router.Create(config);
             await router.Start();

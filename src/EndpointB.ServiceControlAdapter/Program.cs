@@ -16,23 +16,27 @@ namespace EndpointB.ServiceControlAdapter
     {
         static async Task Main()
         {
+            // TODO: Change LearningTransport to SqsTransport
             var transportAdapterConfig =
-                new TransportAdapterConfig<SqsTransport, SqsTransport>("MyTransport");
+                new TransportAdapterConfig<SqsTransport, LearningTransport>("MyTransport");
 
             string folder = Path.GetTempPath();
+            transportAdapterConfig.EndpointSideAuditQueue = "audit.EndpointB";
+            transportAdapterConfig.EndpointSideErrorQueue = "error.EndpointB";
+            transportAdapterConfig.EndpointSideControlQueue = "Particular.ServiceControl.EndpointB";
+
             transportAdapterConfig.CustomizeEndpointTransport(
                 transportConfig =>
                 {
-                    transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
-                        "secretkey", RegionEndpoint.EUWest2));
+                    transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
             transportAdapterConfig.CustomizeServiceControlTransport(
                 customization: transportConfig =>
                 {
-                    transportConfig.ClientFactory(() => new AmazonSQSClient("secret",
-                       "secretkey", RegionEndpoint.EUWest2));
+                    // TODO: Point to your ServiceControl account
+                    // transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
