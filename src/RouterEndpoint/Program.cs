@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Amazon;
 using Amazon.SQS;
 using NServiceBus;
+using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Router;
 using NServiceBus.Unicast.Messages;
 
@@ -16,33 +17,28 @@ namespace RouterEndpoint
         static async Task Main()
         {
             var endpointName = typeof(Program).Namespace;
-            Console.Title = endpointName;
 
-            //string folder = Path.GetTempPath();
             var config = new RouterConfiguration(endpointName);
 
             var aSide = config.AddInterface<SqsTransport>("ASideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                    "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
+                transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
-            aSide.Settings.SetupMessageMetadataRegistry();
 
             var bSide = config.AddInterface<SqsTransport>("BSideOfTheRouter", transportConfig =>
             {
-                transportConfig.ClientFactory(() => new AmazonSQSClient("accessKey",
-                    "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
+                transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
-            bSide.Settings.SetupMessageMetadataRegistry();
 
             var routingProtocol = config.UseStaticRoutingProtocol();
             routingProtocol.AddForwardRoute("ASideOfTheRouter", "BSideOfTheRouter");
             routingProtocol.AddForwardRoute("BSideOfTheRouter", "ASideOfTheRouter");
 
             config.AutoCreateQueues();
-            config.Settings.SetupMessageMetadataRegistry();
 
             var router = Router.Create(config);
             await router.Start();
@@ -57,7 +53,7 @@ namespace RouterEndpoint
 
     public static class SettingsHolderExtensions
     {
-        public static void SetupMessageMetadataRegistry(this SettingsHolder settings)
+        public static void SetupMessageMetadataRegistry(this NServiceBus.Settings.SettingsHolder settings)
         {
             bool IsMessageType(Type t) => true;
             var messageMetadataRegistry = (MessageMetadataRegistry)Activator.CreateInstance(
