@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Particular.PlatformSample" Version="1.18.0" />
+      <PackageReference Include="Particular.PlatformSample" Version="1.19.0" />
     </ItemGroup>
 
 </Project>
