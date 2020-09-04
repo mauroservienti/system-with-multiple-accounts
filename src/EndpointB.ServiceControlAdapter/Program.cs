@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 using NServiceBus;
 using NServiceBus.Configuration.AdvancedExtensibility;
@@ -29,6 +30,7 @@ namespace EndpointB.ServiceControlAdapter
                 transportConfig =>
                 {
                     transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+                    transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
@@ -37,6 +39,7 @@ namespace EndpointB.ServiceControlAdapter
                 {
                     // TODO: Point to your ServiceControl account
                     // transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+                    // transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
                     transportConfig.GetSettings().SetupMessageMetadataRegistry();
                 });
 
