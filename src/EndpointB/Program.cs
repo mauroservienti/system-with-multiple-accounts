@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 using SharedMessages;
 
@@ -30,6 +31,7 @@ namespace EndpointB
             var transportConfig = config.UseTransport<SqsTransport>();
             config.EnableInstallers();
             transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+            transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
 
             var routingConfig = transportConfig.Routing();
             var bridge = routingConfig.ConnectToRouter("RouterEndpoint");

@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 using NServiceBus;
 using NServiceBus.Configuration.AdvancedExtensibility;
@@ -23,6 +24,7 @@ namespace RouterEndpoint
             var aSide = config.AddInterface<SqsTransport>("ASideOfTheRouter", transportConfig =>
             {
                 transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });
@@ -30,6 +32,7 @@ namespace RouterEndpoint
             var bSide = config.AddInterface<SqsTransport>("BSideOfTheRouter", transportConfig =>
             {
                 transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+                transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
                 transportConfig.EnableMessageDrivenPubSubCompatibilityMode();
                 transportConfig.GetSettings().SetupMessageMetadataRegistry();
             });

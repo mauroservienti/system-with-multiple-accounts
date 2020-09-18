@@ -3,6 +3,7 @@ using SharedMessages;
 using System;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 
 namespace EndpointA
@@ -16,12 +17,13 @@ namespace EndpointA
 
             var config = new EndpointConfiguration(endpointName);
             config.SendFailedMessagesTo("error.EndpointA");
-            config.AuditProcessedMessagesTo("audit.EndpointA"); 
+            config.AuditProcessedMessagesTo("audit.EndpointA");
             config.SendHeartbeatTo("Particular.ServiceControl.EndpointA");
 
             var transportConfig = config.UseTransport<SqsTransport>();
             config.EnableInstallers();
             transportConfig.ClientFactory(() => new AmazonSQSClient("key", "secret", RegionEndpoint.EUWest2));
+            transportConfig.ClientFactory(() => new AmazonSimpleNotificationServiceClient("key", "secret", RegionEndpoint.EUWest2));
 
             var routingConfig = transportConfig.Routing();
 
@@ -31,7 +33,7 @@ namespace EndpointA
             bridge.RegisterPublisher(typeof(SomethingHappened), "EndpointB");
 
             var endpointInstance = await Endpoint.Start(config);
-           
+
             Console.WriteLine($"Endpoint {endpointName} started.");
             Console.WriteLine("Press 'A' to send a success message");
             Console.WriteLine("Press 'F' to send a failing message");
@@ -45,7 +47,7 @@ namespace EndpointA
                     Console.WriteLine("Shutting down the endpoint...");
                     break;
                 }
-                
+
                 if (input.ToUpper() == "A")
                 {
                     await endpointInstance.Send(new AMessage() {Message = $"Hi, there. I'm {endpointName}."});
