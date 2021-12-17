@@ -7,7 +7,7 @@
 
     <ItemGroup>
       <PackageReference Include="NServiceBus.AmazonSQS" Version="5.4.0" />
-      <PackageReference Include="NServiceBus.Router" Version="3.9.2" />
+      <PackageReference Include="NServiceBus.Router" Version="3.10.0" />
     </ItemGroup>
 
     <ItemGroup>
